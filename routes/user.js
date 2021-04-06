@@ -1,11 +1,17 @@
 var express = require("express");
 var router = express.Router();
-var { Users } = require("../models");
+var { Users, Courses } = require("../models");
+const { authenticateUser } = require("../middleware/auth-user");
 
-//const user = req.body;
-
-router.get("/", (req, res, next) => {
-  Users.findAll()
+//user post route
+router.get("/", authenticateUser, (req, res, next) => {
+  Users.findAll({
+    include: [
+      {
+        model: Courses,
+      },
+    ],
+  })
     .then((users) => {
       res.status(200);
       res.json(users).end();
@@ -15,7 +21,7 @@ router.get("/", (req, res, next) => {
       res.json(error).end();
     });
 });
-
+//user post route
 router.post("/", (req, res, next) => {
   const user = req.body;
 

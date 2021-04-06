@@ -1,6 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
-
+const models = require("./index");
 module.exports = (sequelize) => {
   class Courses extends Model {}
   Courses.init(
@@ -12,6 +12,9 @@ module.exports = (sequelize) => {
           notNull: {
             msg: "Title required",
           },
+          notEmpty: {
+            msg: "Title required",
+          },
         },
       },
       description: {
@@ -21,14 +24,15 @@ module.exports = (sequelize) => {
           notNull: {
             msg: "Description required",
           },
+          notEmpty: {
+            msg: "Description required",
+          },
         },
       },
-      estimatedTime: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+      estimatedTime: DataTypes.STRING,
+
       materialsNeeded: DataTypes.STRING,
-      // userId: DataTypes.NUMBER,
+      userId: DataTypes.NUMBER,
     },
     {
       sequelize,
@@ -36,8 +40,8 @@ module.exports = (sequelize) => {
     }
   );
   //Model Associations
-  // Courses.associate = (models) => {
-  //   Courses.belongsTo(models.Users, { foreignKey: "userId" });
-  // };
+  Courses.associate = (models) => {
+    Courses.belongsTo(models.Users, { foreignKey: "userId" });
+  };
   return Courses;
 };
