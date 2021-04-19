@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
     .then((data) => res.status(200).json(data))
     .catch((error) => {
       console.log(error);
-      res.status(500).json(error);
+      res.status(400).json(error);
     });
 });
 //get id route
@@ -32,7 +32,7 @@ router.get("/:id", (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(500);
+      res.status(400);
       res.json(error).end();
     });
 });
@@ -41,11 +41,11 @@ router.post("/", authenticateUser, (req, res) => {
   console.log(req.body);
   Courses.create(req.body)
     .then((course) => {
-      res.status(201).json(course).end();
+      res.status(201).location("/api/courses/${course.id}").end();
     })
     .catch((error) => {
       console.log(error);
-      res.status(500);
+      res.status(400);
       res.json(error).end();
     });
 });
@@ -59,15 +59,15 @@ router.put("/:id", authenticateUser, function (req, res, next) {
         .update(req.body)
 
         .then((course) => {
-          res.status(201).json(course).end();
+          res.status(204).json(course).end();
         })
         .catch((error) => {
-          res.status(500);
+          res.status(400);
           res.json(error).end();
         });
     })
     .catch((error) => {
-      res.status(500);
+      res.status(400);
       res.json(error).end();
     });
 });
@@ -80,7 +80,7 @@ router.delete("/:id", authenticateUser, function (req, res, next) {
       res.status(204).end();
     })
     .catch((error) => {
-      res.status(500);
+      res.status(400);
       res.json(error).end();
     });
 });

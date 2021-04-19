@@ -3,9 +3,9 @@ var router = express.Router();
 var { Users, Courses } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
 
-//user post route
+//user get route
 router.get("/", authenticateUser, (req, res, next) => {
-  Users.findAll({
+  Users.findOne({
     include: [
       {
         model: Courses,
@@ -17,7 +17,7 @@ router.get("/", authenticateUser, (req, res, next) => {
       res.json(users).end();
     })
     .catch((error) => {
-      res.status(500);
+      res.status(400);
       res.json(error).end();
     });
 });
