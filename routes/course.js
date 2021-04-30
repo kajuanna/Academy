@@ -53,6 +53,11 @@ router.post("/", authenticateUser, (req, res) => {
 //put couse (update)
 
 router.put("/:id", authenticateUser, function (req, res, next) {
+  if (!req.body.title || !req.body.userId) {
+    res.status(400);
+    res.json({ error: "you must supply a title or user" });
+    return;
+  }
   Courses.findByPk(req.params.id)
     .then(function (course) {
       course
